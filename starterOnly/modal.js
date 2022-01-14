@@ -36,35 +36,30 @@ const email = document.querySelector('input[name="email"]');
 const birthdate = document.querySelector('input[name="birthdate"]');
 const quantity = document.querySelector('input[name="quantity"]');
 
-//modification spécifiques du message d'erreur pour chaque input du formulaire
-first.addEventListener('invalid', function (event) {
-  if (event.target.validity.valueMissing) {
-    event.target.setCustomValidity('Veuillez entrer 2 caractères ou plus pour le champ du prénom.');
-  }
-});
-last.addEventListener('invalid', function (event) {
-  if (event.target.validity.valueMissing) {
-    event.target.setCustomValidity('Veuillez entrer 2 caractères ou plus pour le champ du nom.');
-  }
-});
-
-email.addEventListener('invalid', function (event) {
-  if (event.target.validity.valueMissing) {
-    event.target.setCustomValidity('Veuillez entrer une adresse email valide');
-  }
-});
-
-birthdate.addEventListener('invalid', function (event) {
-  if (event.target.validity.valueMissing) {
-    event.target.setCustomValidity('Veuillez entrer votre date de naissance');
-  }
-});
-
-quantity.addEventListener('invalid', function (event) {
-  if (event.target.validity.valueMissing) {
-    event.target.setCustomValidity('Veuillez entrer un chiffre');
-  }
-});
+//modification spécifique du message d'erreur pour chaque input du formulaire
+document.querySelectorAll('input').forEach(item => {
+  item.addEventListener('invalid', function (event) {
+    if (event.target.validity.valueMissing) {
+      let input = this.id;
+      console.log("input: " + input);
+      let errorMessage = "";
+      switch (input) {
+        case "first": errorMessage = 'Veuillez entrer 2 caractères ou plus pour le champ du prénom.';
+          break;
+        case "last": errorMessage = 'Veuillez entrer 2 caractères ou plus pour le champ du nom.';
+          break;
+        case "email": errorMessage = 'Veuillez entrer une adresse email valide';
+          break;
+        case "birthdate": errorMessage = 'Veuillez entrer votre date de naissance';
+          break;
+        case "quantity": errorMessage = 'Veuillez entrer un chiffre';
+          break;
+        default: errorMessage = 'Veuillez remplir ce champ';
+      }
+      event.target.setCustomValidity(errorMessage);
+    }
+  })
+})
 
 //faire un reset du message d'erreur afin que le formulaire soit validé après correction
 document.querySelectorAll('input').forEach(item => {
@@ -74,9 +69,12 @@ document.querySelectorAll('input').forEach(item => {
 });
 
 
+
 //les messages d'erreurs des deux derniers input du formulaire
 const locationError = document.querySelector("#location-error");
 const conditionError = document.querySelector("#condition-error");
+
+form.addEventListener("submit", validateData);
 
 function validateData(event) {
   event.preventDefault();
@@ -84,20 +82,17 @@ function validateData(event) {
   const entries = formData.entries();
   const data = Object.fromEntries(entries);
   console.log(data);
+
   //data.location doit être selectionné
   if (!data.location) {
     locationError.textContent = "Merci de selectionner le tournoi auquel vous souhaitez participer cette année!";
-    locationError.style.fontSize = "16px";
-    locationError.style.fontWeight = "900";
+    locationError.className = "locationError";
 
   }
   //checkbox1 doit être selectionné
   else if (!document.querySelector("#checkbox1").checked) {
     conditionError.textContent = "Merci de lire et d'accepter les conditions d'utilisation!";
-    conditionError.style.fontSize = "16px";
-    conditionError.style.display = "block";
-    conditionError.style.paddingTop = "10px";
-    conditionError.style.fontWeight = "900";
+    conditionError.className = "conditionError";
   }
   else {
     //le formulaire passe les tests : il disparait après que les informations soient stockées dans finalData
