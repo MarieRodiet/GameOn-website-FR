@@ -36,13 +36,27 @@ const email = document.querySelector('input[name="email"]');
 const birthdate = document.querySelector('input[name="birthdate"]');
 const quantity = document.querySelector('input[name="quantity"]');
 
+//Verification de la date de naissance 
+let today = new Date();
+let dd = today.getDate();
+let mm = today.getMonth() + 1;
+let yyyy = today.getFullYear();
+if (dd < 10) {
+  dd = "0" + dd;
+}
+if (mm < 10) {
+  mm = "0" + mm;
+}
+today = yyyy + '-' + mm + '-' + dd;
+birthdate.setAttribute("max", today);
+
+
 //modification spécifique du message d'erreur pour chaque input du formulaire
 document.querySelectorAll('input').forEach(item => {
   item.addEventListener('invalid', function (event) {
-    if (event.target.validity.valueMissing) {
-      let input = this.id;
-      console.log("input: " + input);
-      let errorMessage = "";
+    let errorMessage = "";
+    let input = this.id;
+    if (event.target.validity.valueMissing || event.target.validity.tooShort || event.target.validity.typeMismatch || event.target.value.rangeUnderflow) {
       switch (input) {
         case "first": errorMessage = 'Veuillez entrer 2 caractères ou plus pour le champ du prénom.';
           break;
@@ -69,7 +83,6 @@ document.querySelectorAll('input').forEach(item => {
 });
 
 
-
 //les messages d'erreurs des deux derniers input du formulaire
 const locationError = document.querySelector("#location-error");
 const conditionError = document.querySelector("#condition-error");
@@ -78,16 +91,15 @@ form.addEventListener("submit", validateData);
 
 function validateData(event) {
   event.preventDefault();
+  /*Creation d'un object FormData pour avoir un ensemble de 
+  paires clé/valeur représentant les champs du formulaire et leurs valeurs */
   const formData = new FormData(form);
   const entries = formData.entries();
   const data = Object.fromEntries(entries);
-  console.log(data);
-
   //data.location doit être selectionné
   if (!data.location) {
     locationError.textContent = "Merci de selectionner le tournoi auquel vous souhaitez participer cette année!";
     locationError.className = "locationError";
-
   }
   //checkbox1 doit être selectionné
   else if (!document.querySelector("#checkbox1").checked) {
@@ -95,13 +107,11 @@ function validateData(event) {
     conditionError.className = "conditionError";
   }
   else {
-    //le formulaire passe les tests : il disparait après que les informations soient stockées dans finalData
-    //use JSON.stringify to convert data into a string that can now be sent to a server
-    finalData = JSON.stringify(data);
-    console.log("finalData");
-    console.log(finalData);
     alert("Merci! Votre réservation a été reçue!");
+    console.log("formulaire accepté: " + data);
     modalbg.style.display = "none";
   }
+
+
 }
 
