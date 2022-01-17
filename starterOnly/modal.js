@@ -35,12 +35,14 @@ const last = document.querySelector('input[name="last"]');
 const email = document.querySelector('input[name="email"]');
 const birthdate = document.querySelector('input[name="birthdate"]');
 const quantity = document.querySelector('input[name="quantity"]');
+let inputs = [first, last, email, quantity, birthdate];
 
 //Verification de la date de naissance 
 let today = new Date();
 let dd = today.getDate();
 let mm = today.getMonth() + 1;
-let yyyy = today.getFullYear();
+//age minimum de 10 ans
+let yyyy = today.getFullYear() - 10;
 if (dd < 10) {
   dd = "0" + dd;
 }
@@ -52,15 +54,21 @@ birthdate.setAttribute("max", today);
 
 
 //modification spécifique du message d'erreur pour chaque input du formulaire
-document.querySelectorAll('input').forEach(item => {
-  item.addEventListener('change', function (event) {
-    console.log("there was a change");
-    let errorMessage = "";
-    let inputId = this.id;
+inputs.forEach(input => {
+  input.addEventListener('change', function (event) {
     if (event.target.validity.valueMissing || event.target.validity.tooShort || event.target.validity.typeMismatch || event.target.value.rangeUnderflow) {
-      document.getElementById(inputId).className = "invalid";
-      console.log("invalid: " + inputId);
-      switch (inputId) {
+      document.getElementById(this.id).className = "invalidInput";
+    }
+    else {
+      document.getElementById(this.id).className = "validInput";
+    }
+  })
+})
+//modification spécifique du message d'erreur pour chaque input du formulaire
+inputs.forEach(input => {
+  input.addEventListener('invalid', function (event) {
+    if (event.target.validity.valueMissing || event.target.validity.tooShort || event.target.validity.typeMismatch || event.target.value.rangeUnderflow) {
+      switch (this.id) {
         case "first": errorMessage = 'Veuillez entrer 2 caractères ou plus pour le champ du prénom.';
           break;
         case "last": errorMessage = 'Veuillez entrer 2 caractères ou plus pour le champ du nom.';
@@ -74,17 +82,12 @@ document.querySelectorAll('input').forEach(item => {
         default: errorMessage = 'Veuillez remplir ce champ';
       }
       event.target.setCustomValidity(errorMessage);
-      console.log(event.target);
-    }
-    else if (event.target.validity.valid) {
-      document.getElementById(inputId).className = "valid";
-      console.log("valid: " + inputId);
     }
   })
 })
 
 //faire un reset du message d'erreur afin que le formulaire soit validé après correction
-document.querySelectorAll('input').forEach(item => {
+inputs.forEach(item => {
   item.addEventListener('change', function (event) {
     event.target.setCustomValidity('');
   });
