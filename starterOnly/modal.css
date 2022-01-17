@@ -333,6 +333,7 @@ input[data-error]::after {
   color: #fff;
   cursor: pointer;
   border: 0;
+  text-align: center;
 }
 /* custom select styles */
 .custom-select {
@@ -532,7 +533,6 @@ footer {
 Les bordures des champs de saisies changent de couleurs: 
 Rouge pour invalides,
 Vert pour valides
-*/
 
 input:required {
   border: 2px solid #279e7a;
@@ -544,6 +544,31 @@ input:invalid {
   border: 2px solid red;
   border-radius: 0.2em;
   padding-right: 5px;
+}
+
+
+*/
+
+.valid {
+  border: 2px solid #279e7a;
+  outline: none;
+  margin: 0;
+  padding: 8px;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 20px;
+  height: 48px;
+}
+
+.invalid {
+  border: 2px solid #fe142f;
+  outline: none;
+  margin: 0;
+  padding: 8px;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 20px;
+  height: 48px;
 }
 
 .locationError {

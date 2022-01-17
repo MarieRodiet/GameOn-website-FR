@@ -53,11 +53,14 @@ birthdate.setAttribute("max", today);
 
 //modification spécifique du message d'erreur pour chaque input du formulaire
 document.querySelectorAll('input').forEach(item => {
-  item.addEventListener('invalid', function (event) {
+  item.addEventListener('change', function (event) {
+    console.log("there was a change");
     let errorMessage = "";
-    let input = this.id;
+    let inputId = this.id;
     if (event.target.validity.valueMissing || event.target.validity.tooShort || event.target.validity.typeMismatch || event.target.value.rangeUnderflow) {
-      switch (input) {
+      document.getElementById(inputId).className = "invalid";
+      console.log("invalid: " + inputId);
+      switch (inputId) {
         case "first": errorMessage = 'Veuillez entrer 2 caractères ou plus pour le champ du prénom.';
           break;
         case "last": errorMessage = 'Veuillez entrer 2 caractères ou plus pour le champ du nom.';
@@ -71,6 +74,11 @@ document.querySelectorAll('input').forEach(item => {
         default: errorMessage = 'Veuillez remplir ce champ';
       }
       event.target.setCustomValidity(errorMessage);
+      console.log(event.target);
+    }
+    else if (event.target.validity.valid) {
+      document.getElementById(inputId).className = "valid";
+      console.log("valid: " + inputId);
     }
   })
 })
