@@ -37,7 +37,7 @@ const birthdate = document.querySelector('input[name="birthdate"]');
 const quantity = document.querySelector('input[name="quantity"]');
 let inputs = [first, last, email, quantity, birthdate];
 
-//Verification de la date de naissance 
+//Verification de la date de naissance selon le jour d'aujourd'hui
 let today = new Date();
 let dd = today.getDate();
 let mm = today.getMonth() + 1;
@@ -50,10 +50,11 @@ if (mm < 10) {
   mm = "0" + mm;
 }
 today = yyyy + '-' + mm + '-' + dd;
+console.log(today);
 birthdate.setAttribute("max", today);
 
 
-//modification spécifique du message d'erreur pour chaque input du formulaire
+//bordure verte: valide OU rouge: invalide
 inputs.forEach(input => {
   input.addEventListener('change', function (event) {
     if (event.target.validity.valueMissing || event.target.validity.tooShort || event.target.validity.typeMismatch || event.target.value.rangeUnderflow) {
@@ -64,9 +65,11 @@ inputs.forEach(input => {
     }
   })
 })
-//modification spécifique du message d'erreur pour chaque input du formulaire
+
+//message d'erreur spécifique à sa validation
 inputs.forEach(input => {
   input.addEventListener('invalid', function (event) {
+    let errorMessage = "";
     if (event.target.validity.valueMissing || event.target.validity.tooShort || event.target.validity.typeMismatch || event.target.value.rangeUnderflow) {
       switch (this.id) {
         case "first": errorMessage = 'Veuillez entrer 2 caractères ou plus pour le champ du prénom.';
@@ -94,7 +97,7 @@ inputs.forEach(item => {
 });
 
 
-//les messages d'erreurs des deux derniers input du formulaire
+//les messages d'erreurs des deux derniers input obligatoires du formulaire
 const locationError = document.querySelector("#location-error");
 const conditionError = document.querySelector("#condition-error");
 

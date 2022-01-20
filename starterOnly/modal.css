@@ -537,6 +537,7 @@ Vert pour valides
 
 .validInput {
   border: 2px solid #279e7a;
+  background-color: #bee2d7;
   outline: none;
   margin: 0;
   padding: 8px;
@@ -548,6 +549,7 @@ Vert pour valides
 
 .invalidInput {
   border: 2px solid #fe142f;
+  background-color: #ffb9c1;
   outline: none;
   margin: 0;
   padding: 8px;
