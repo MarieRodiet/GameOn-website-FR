@@ -111,6 +111,7 @@ const locationError = document.querySelector("#location-error");
 const conditionError = document.querySelector("#condition-error");
 
 form.addEventListener("submit", validateData);
+let regex = /[A-Za-z]/;
 
 function validateData(event) {
   event.preventDefault();
