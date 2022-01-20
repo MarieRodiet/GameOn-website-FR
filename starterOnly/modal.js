@@ -50,18 +50,18 @@ if (mm < 10) {
   mm = "0" + mm;
 }
 today = yyyy + '-' + mm + '-' + dd;
-console.log(today);
 birthdate.setAttribute("max", today);
 
 
 //bordure verte: valide OU rouge: invalide
 inputs.forEach(input => {
   input.addEventListener('change', function (event) {
-    if (event.target.validity.valueMissing || event.target.validity.tooShort || event.target.validity.typeMismatch || event.target.value.rangeUnderflow) {
-      document.getElementById(this.id).className = "invalidInput";
+    let item = document.getElementById(this.id);
+    if (isValid(event)) {
+      item.className = "invalidInput";
     }
     else {
-      document.getElementById(this.id).className = "validInput";
+      item.className = "validInput";
     }
   })
 })
@@ -70,7 +70,7 @@ inputs.forEach(input => {
 inputs.forEach(input => {
   input.addEventListener('invalid', function (event) {
     let errorMessage = "";
-    if (event.target.validity.valueMissing || event.target.validity.tooShort || event.target.validity.typeMismatch || event.target.value.rangeUnderflow) {
+    if (isValid(event)) {
       switch (this.id) {
         case "first": errorMessage = 'Veuillez entrer 2 caractères ou plus pour le champ du prénom.';
           break;
@@ -95,6 +95,15 @@ inputs.forEach(item => {
     event.target.setCustomValidity('');
   });
 });
+
+function isValid(event) {
+  if (event.target.validity.valueMissing || event.target.validity.tooShort || event.target.validity.typeMismatch || event.target.value.rangeUnderflow) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
 
 
 //les messages d'erreurs des deux derniers input obligatoires du formulaire
